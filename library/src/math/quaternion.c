@@ -103,7 +103,7 @@ int rc_quaternion_to_tb_array(double q[4], double tb[3])
 	}
 	// these functions are done with double precision since they cannot be
 	// accelerated by the NEON unit and the VFP computes doubles at the same
-	// speed as single-precision doubles
+	// speed as single-precision floating point numbers
 	tb[1] = asin(2.0*(q[0]*q[2] - q[1]*q[3]));
 	tb[0] = atan2(2.0*(q[2]*q[3] + q[0]*q[1]),
 		1.0 - 2.0*(q[1]*q[1] + q[2]*q[2]));
