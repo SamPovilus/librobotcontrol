@@ -1972,29 +1972,12 @@ int __read_dmp_fifo(rc_mpu_data_t* data)
 	// if exactly 2 or 3 packets are there we just missed some (whoops)
 	// read both in and set the offset i to one packet length
 	// the last packet data will be read normally
-	else if(fifo_count==2*packet_len){
+	else if(fifo_count%packet_len==0){
+		num_packets_missed = fifo_count/packet_len - 1;
 		if(config.show_warnings&& first_run!=1){
-			printf("warning: imu fifo contains two packets\n");
+			printf("warning: imu fifo contains %d packets\n", num_packets_missed + 1);
 		}
-		i=packet_len;
-	}
-	else if(fifo_count==3*packet_len){
-		if(config.show_warnings&& first_run!=1){
-			printf("warning: imu fifo contains three packets\n");
-		}
-		i=2*packet_len;
-	}
-	else if(fifo_count==4*packet_len){
-		if(config.show_warnings&& first_run!=1){
-			printf("warning: imu fifo contains four packets\n");
-		}
-		i=2*packet_len;
-	}
-	else if(fifo_count==5*packet_len){
-		if(config.show_warnings&& first_run!=1){
-			printf("warning: imu fifo contains five packets\n");
-		}
-		i=2*packet_len;
+		i=num_packets_missed*packet_len;
 	}
 	// finally, if we got a weird packet length, reset the fifo
 	else{
